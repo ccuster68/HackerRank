@@ -1,30 +1,58 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using System.Text;
-using System;
 
-class Solution {
+class Solution
+{
 
-    // Complete the almostSorted function below.
-    static void almostSorted(int[] arr) {
+    static int insertionSort(int[] arr)
+    {
+        var shifts = 0;
+        var dicNumbers = new Dictionary<int, int>();
 
+        for (var i = 0; i < arr.Length; i++)
+        {
+            shifts+=dicNumbers.Where(kvp => kvp.Key > arr[i]).Sum(kvp => kvp.Value);
+
+            if(!dicNumbers.ContainsKey(arr[i]))
+                dicNumbers.Add(arr[i],1);
+            else
+                dicNumbers[arr[i]]++;
+        }
+
+        return shifts;
 
     }
 
     static void Main(string[] args) {
-        int n = Convert.ToInt32(Console.ReadLine());
+        
+        var testData = "test.txt";
+        var testBase = @"c:\temp";
 
-        int[] arr = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => Convert.ToInt32(arrTemp))
-            ;
-        almostSorted(arr);
-    }
+        var answer = 0;
+
+        using (TextReader tr = new StreamReader(Path.Combine(testBase, testData)))
+        {
+            var value = tr.ReadLine();
+            var arr = value.Split(' ').Select(int.Parse).ToArray();
+            int result = insertionSort(arr);
+
+            Console.WriteLine(result);
+        }
+
+        //int t = Convert.ToInt32(Console.ReadLine());
+
+        //for (int tItr = 0; tItr < t; tItr++) {
+        //    int n = Convert.ToInt32(Console.ReadLine());
+
+        //    int[] arr = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => Convert.ToInt32(arrTemp))
+        //        ;
+        //    int result = insertionSort(arr);
+
+        //    Console.WriteLine(result);
+        }
+
 }
